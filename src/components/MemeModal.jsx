@@ -24,9 +24,9 @@ const MemeModal = ({ addMeme, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="bg-gradient-to-br from-gray-800 via-gray-900 to-black text-white rounded-2xl shadow-2xl w-[95%] max-w-lg max-h-[90vh] overflow-y-auto p-8 border border-gray-700">
-        <h2 className="text-3xl font-bold text-center mb-6 tracking-wide">
+    <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 overflow-x-hidden">
+      <div className="bg-gradient-to-br from-gray-800 via-gray-900 to-black text-white rounded-2xl shadow-2xl w-[95%] max-w-lg max-h-[90vh] overflow-y-auto scrollbar-hide p-6 sm:p-8 border border-gray-700">
+        <h2 className="text-2xl sm:text-3xl font-bold text-center mb-6 tracking-wide">
           🚀 Upload Your <span className="text-teal-400">Meme</span>
         </h2>
 
@@ -44,7 +44,7 @@ const MemeModal = ({ addMeme, onClose }) => {
               <img
                 src={image}
                 alt="Preview"
-                className="mt-3 w-full max-h-64 object-contain rounded-xl border border-gray-600"
+                className="mt-3 w-full max-h-56 sm:max-h-64 object-contain rounded-xl border border-gray-600 bg-black"
               />
             )}
           </div>
@@ -93,7 +93,7 @@ const MemeModal = ({ addMeme, onClose }) => {
         </div>
 
         {/* Buttons */}
-        <div className="flex justify-end gap-4 mt-8">
+        <div className="flex flex-col sm:flex-row justify-end gap-4 mt-8">
           <button
             onClick={onClose}
             className="text-gray-400 hover:text-red-500 transition font-semibold"
