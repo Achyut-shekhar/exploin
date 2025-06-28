@@ -20,13 +20,14 @@ const App = () => {
   const [showModal, setShowModal] = useState(false);
   const [sortBy, setSortBy] = useState("newest");
   const [showIntro, setShowIntro] = useState(true);
+  const [view, setView] = useState("feed"); // 👈 NEW
 
   useEffect(() => {
     localStorage.setItem("memes", JSON.stringify(memes));
   }, [memes]);
 
   useEffect(() => {
-    const timer = setTimeout(() => setShowIntro(false), 3000); // 3s intro
+    const timer = setTimeout(() => setShowIntro(false), 3000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -59,9 +60,12 @@ const App = () => {
     setCurrentUser("");
   };
 
+  // ✅ Sort memes
   const sortedMemes = [...memes].sort((a, b) =>
     sortBy === "likes" ? b.likes - a.likes : b.date - a.date
   );
+
+  const userMemes = sortedMemes.filter((m) => m.owner === currentUser);
 
   if (showIntro) {
     return <Intro />;
@@ -77,12 +81,34 @@ const App = () => {
       <main className="min-h-screen bg-gray-900 text-white p-4">
         <div className="max-w-5xl mx-auto">
           <div className="flex justify-between items-center mb-6">
-            <button
-              onClick={() => setShowModal(true)}
-              className="bg-teal-600 hover:bg-teal-700 px-4 py-2 rounded"
-            >
-              Upload Meme
-            </button>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setShowModal(true)}
+                className="bg-teal-600 hover:bg-teal-700 px-4 py-2 rounded"
+              >
+                Upload Meme
+              </button>
+              <button
+                onClick={() => setView("feed")}
+                className={`px-4 py-2 rounded ${
+                  view === "feed"
+                    ? "bg-blue-600"
+                    : "bg-gray-700 hover:bg-gray-600"
+                }`}
+              >
+                All Memes
+              </button>
+              <button
+                onClick={() => setView("dashboard")}
+                className={`px-4 py-2 rounded ${
+                  view === "dashboard"
+                    ? "bg-purple-600"
+                    : "bg-gray-700 hover:bg-gray-600"
+                }`}
+              >
+                My Dashboard
+              </button>
+            </div>
 
             <div className="flex items-center gap-4">
               <select
@@ -103,7 +129,7 @@ const App = () => {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {sortedMemes.map((meme) => (
+            {(view === "feed" ? sortedMemes : userMemes).map((meme) => (
               <MemeCard
                 key={meme.id}
                 meme={meme}
